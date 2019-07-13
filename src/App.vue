@@ -1,17 +1,39 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <h1>Translator</h1>
+    <translateIn v-on:formSubmit='translateText'></translateIn>
+    <translateOut v-text="translatedText"></translateOut>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+import translateIn from './components/translateIn.vue' 
+import translateOut from './components/translateOut.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    // HelloWorld,
+    translateIn,
+    translateOut
+  },
+  data:function(){
+    return {
+      translatedText:'',
+    }
+  },
+  methods:{
+    translateText:function(text,language){
+      const baseUrl=`https://translate.yandex.net/api/v1.5/tr.json/translate`;
+      const query=`?key=trnsl.1.1.20190622T213455Z.f67e95598c7aee64.c0c49d0594aa527178d83c8e3c1a81ed05709a56&lang=${language}&text=${text}`
+      this.$http.get(`${baseUrl}${query}`)
+        .then(response=>{
+          this.translatedText = response.body.text[0];
+        });
+    }
   }
 }
 </script>
