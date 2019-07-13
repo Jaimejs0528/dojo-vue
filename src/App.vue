@@ -23,16 +23,12 @@ export default {
   data:function(){
     return {
       translatedText:'',
-      language:'',
     }
   },
-  created(){
-    this.language='en'
-  },
   methods:{
-    translateText:function(text){
+    translateText:function(text,language){
       const baseUrl=`https://translate.yandex.net/api/v1.5/tr.json/translate`;
-      const query=`?key=trnsl.1.1.20190622T213455Z.f67e95598c7aee64.c0c49d0594aa527178d83c8e3c1a81ed05709a56&lang=${this.language}&text=${text}`
+      const query=`?key=trnsl.1.1.20190622T213455Z.f67e95598c7aee64.c0c49d0594aa527178d83c8e3c1a81ed05709a56&lang=${language}&text=${text}`
       this.$http.get(`${baseUrl}${query}`)
         .then(response=>{
           this.translatedText = response.body.text[0];
